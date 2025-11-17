@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIS Controls Roadmap Tool | أداة خارطة طريق ضوابط CIS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1 id="appTitle">CIS Controls Roadmap Tool</h1>
+            </div>
+            <button class="btn-language" id="languageToggle" aria-label="Toggle Language">
+                <span id="langText">العربية</span>
+            </button>
+        </div>
+        <nav class="nav" id="mainNav">
+            <button class="nav-item active" data-view="dashboard">
+                <span class="nav-text">Dashboard</span>
+            </button>
+            <button class="nav-item" data-view="profile">
+                <span class="nav-text">Organization Profile</span>
+            </button>
+            <button class="nav-item" data-view="gap-analysis">
+                <span class="nav-text">Gap Analysis</span>
+            </button>
+            <button class="nav-item" data-view="roadmap">
+                <span class="nav-text">Roadmap</span>
+            </button>
+            <button class="nav-item" data-view="frameworks">
+                <span class="nav-text">Framework Mapping</span>
+            </button>
+            <button class="nav-item" data-view="reports">
+                <span class="nav-text">Reports</span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <!-- Dashboard View -->
+        <section id="dashboard" class="view active">
+            <div class="dashboard-hero">
+                <h2 id="welcomeTitle">Welcome to CIS Controls Roadmap Tool</h2>
+                <p id="welcomeSubtitle">Professional gap analysis and implementation planning for CIS Controls v8.1</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: var(--color-bg-1);">📊</div>
+                    <div class="stat-content">
+                        <div class="stat-value">18</div>
+                        <div class="stat-label" id="totalControlsLabel">Total CIS Controls</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: var(--color-bg-2);">✓</div>
+                    <div class="stat-content">
+                        <div class="stat-value">153</div>
+                        <div class="stat-label" id="totalSafeguardsLabel">Total Safeguards</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: var(--color-bg-3);">🎯</div>
+                    <div class="stat-content">
+                        <div class="stat-value">56</div>
+                        <div class="stat-label" id="ig1Label">IG1 Safeguards</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: var(--color-bg-4);">🎯</div>
+                    <div class="stat-content">
+                        <div class="stat-value">74</div>
+                        <div class="stat-label" id="ig2Label">IG2 Safeguards</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-cards">
+                <div class="action-card">
+                    <h3 id="quickStartTitle">Quick Start</h3>
+                    <p id="quickStartDesc">Begin a new assessment or load an existing one</p>
+                    <div class="action-buttons">
+                        <button class="btn btn--primary" id="newAssessmentBtn">
+                            <span>New Assessment</span>
+                        </button>
+                        <button class="btn btn--secondary" id="loadAssessmentBtn">
+                            <span>Load Assessment</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="action-card">
+                    <h3 id="progressTitle">Assessment Progress</h3>
+                    <div class="progress-display">
+                        <canvas id="progressChart" width="200" height="200"></canvas>
+                        <div class="progress-text">
+                            <div class="progress-value" id="overallProgress">0%</div>
+                            <div class="progress-label" id="completedLabel">Completed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recent-section" id="recentSection" style="display: none;">
+                <h3 id="recentTitle">Recent Assessments</h3>
+                <div id="recentList" class="recent-list"></div>
+            </div>
+        </section>
+
+        <!-- Organization Profile View -->
+        <section id="profile" class="view">
+            <div class="view-header">
+                <h2 id="profileTitle">Organization Profile</h2>
+                <p id="profileSubtitle">Provide your organization details to customize the assessment</p>
+            </div>
+            
+            <form id="profileForm" class="profile-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" id="orgNameLabel">Organization Name</label>
+                        <input type="text" class="form-control" id="orgName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" id="sectorLabel">Sector</label>
+                        <select class="form-control" id="sector" required>
+                            <option value="">Select sector</option>
+                            <option value="financial">Financial Services &amp; Banking</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="government">Government &amp; Public Sector</option>
+                            <option value="energy">Energy &amp; Utilities</option>
+                            <option value="telecom">Telecommunications</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="retail">Retail &amp; E-Commerce</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" id="sizeLabel">Organization Size</label>
+                        <select class="form-control" id="orgSize" required>
+                            <option value="">Select size</option>
+                            <option value="small">Small (&lt;50 employees)</option>
+                            <option value="medium">medium (50-500 employees)</option>
+                            <option value="large">Large (500+ employees)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" id="maturityLabel">Current Maturity Level</label>
+                        <select class="form-control" id="maturity" required>
+                            <option value="">Select maturity level</option>
+                            <option value="initial">Initial</option>
+                            <option value="developing">Developing</option>
+                            <option value="defined">Defined</option>
+                            <option value="managed">Managed</option>
+                            <option value="optimizing">Optimizing</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" id="targetIGLabel">Target Implementation Group</label>
+                        <select class="form-control" id="targetIG" required>
+                            <option value="">Select IG</option>
+                            <option value="IG1">IG1 - Essential Cyber Hygiene</option>
+                            <option value="IG2">IG2 - Enhanced Security</option>
+                            <option value="IG3">IG3 - Comprehensive Controls</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" id="regionLabel">Regional Focus</label>
+                        <select class="form-control" id="region" required>
+                            <option value="">Select region</option>
+                            <option value="kuwait">Kuwait</option>
+                            <option value="saudi">Saudi Arabia</option>
+                            <option value="uae">UAE</option>
+                            <option value="qatar">Qatar</option>
+                            <option value="bahrain">Bahrain</option>
+                            <option value="oman">Oman</option>
+                            <option value="gcc">Other GCC</option>
+                            <option value="international">International</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" id="complianceLabel">Compliance Requirements (Select all that apply)</label>
+                    <div class="checkbox-grid" id="complianceCheckboxes">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="compliance" value="NIST">
+                            <span>NIST CSF</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="compliance" value="ISO27001">
+                            <span>ISO 27001</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="compliance" value="SAMA">
+                            <span>SAMA</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="compliance" value="CBK">
+                            <span>CBK Kuwait</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="compliance" value="NCA">
+                            <span>NCA-ECC</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="compliance" value="PCI-DSS">
+                            <span>PCI-DSS</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="compliance" value="SWIFT">
+                            <span>SWIFT CSCF</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary">
+                        <span id="saveProfileBtn">Save Profile &amp; Continue</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Gap Analysis View -->
+        <section id="gap-analysis" class="view">
+            <div class="view-header">
+                <h2 id="gapAnalysisTitle">Gap Analysis</h2>
+                <p id="gapAnalysisSubtitle">Assess your implementation status for each CIS Control</p>
+            </div>
+
+            <div class="gap-overview">
+                <div class="overview-card">
+                    <div class="gauge-container">
+                        <canvas id="complianceGauge" width="250" height="250"></canvas>
+                    </div>
+                    <div class="overview-stats">
+                        <div class="overview-stat">
+                            <span class="stat-label" id="igScoreLabel">IG Score</span>
+                            <span class="stat-value" id="igScore">0%</span>
+                        </div>
+                        <div class="overview-stat">
+                            <span class="stat-label" id="priorityGapsLabel">Priority Gaps</span>
+                            <span class="stat-value" id="priorityGapsCount">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gap-chart-container">
+                    <canvas id="gapChart"></canvas>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <div class="controls-header">
+                    <h3 id="controlsTitle">CIS Controls Assessment</h3>
+                    <div class="controls-filters">
+                        <select class="form-control filter-select" id="statusFilter">
+                            <option value="all">All Status</option>
+                            <option value="0">Not Started</option>
+                            <option value="25">Planning</option>
+                            <option value="50">In Progress</option>
+                            <option value="75">Partially Implemented</option>
+                            <option value="100">Fully Implemented</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="controlsList" class="controls-list"></div>
+            </div>
+        </section>
+
+        <!-- Roadmap View -->
+        <section id="roadmap" class="view">
+            <div class="view-header">
+                <h2 id="roadmapTitle">Implementation Roadmap</h2>
+                <p id="roadmapSubtitle">Generate and customize your implementation timeline</p>
+            </div>
+
+            <div class="roadmap-config">
+                <div class="config-card">
+                    <h3 id="timelineConfigTitle">Timeline Configuration</h3>
+                    <div class="config-grid">
+                        <div class="form-group">
+                            <label class="form-label" id="startDateLabel">Project Start Date</label>
+                            <input type="date" class="form-control" id="startDate">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" id="durationLabel">Duration</label>
+                            <select class="form-control" id="duration">
+                                <option value="3">3 months</option>
+                                <option value="6">6 months</option>
+                                <option value="12" selected>12 months</option>
+                                <option value="18">18 months</option>
+                                <option value="24">24 months</option>
+                                <option value="36">36 months</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" id="resourcesLabel">Resource Allocation</label>
+                            <select class="form-control" id="resources">
+                                <option value="minimal">Minimal</option>
+                                <option value="moderate" selected>Moderate</option>
+                                <option value="substantial">Substantial</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn--primary" id="generateRoadmapBtn">
+                        <span id="generateBtnText">Generate Roadmap</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="roadmapDisplay" class="roadmap-display" style="display: none;">
+                <div class="roadmap-legend">
+                    <h4 id="phasesTitle">Implementation Phases</h4>
+                    <div class="legend-items">
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: #0066CC;"></span>
+                            <span id="phase1Label">Phase 1: Quick Wins</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: #28A745;"></span>
+                            <span id="phase2Label">Phase 2: Foundation</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: #FFA500;"></span>
+                            <span id="phase3Label">Phase 3: Enhancement</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: #6F42C1;"></span>
+                            <span id="phase4Label">Phase 4: Advanced</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background: #DC3545;"></span>
+                            <span id="phase5Label">Phase 5: Optimization</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="roadmap-timeline">
+                    <canvas id="roadmapChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Framework Mapping View -->
+        <section id="frameworks" class="view">
+            <div class="view-header">
+                <h2 id="frameworksTitle">Framework Mapping</h2>
+                <p id="frameworksSubtitle">Visualize how CIS Controls map to other frameworks</p>
+            </div>
+
+            <div class="framework-selector">
+                <h3 id="selectFrameworksTitle">Select Frameworks to Compare</h3>
+                <div class="framework-checkboxes" id="frameworkCheckboxes">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="framework" value="NIST" checked>
+                        <span>NIST CSF 2.0</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="framework" value="ISO27001" checked>
+                        <span>ISO 27001:2022</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="framework" value="SAMA">
+                        <span>SAMA Framework</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="framework" value="CBK">
+                        <span>CBK Kuwait</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="framework" value="NCA">
+                        <span>NCA-ECC</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="framework" value="PCI-DSS">
+                        <span>PCI-DSS</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="framework" value="SWIFT">
+                        <span>SWIFT CSCF</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="framework-visual">
+                <div class="view-toggle">
+                    <button class="toggle-btn active" data-view-type="matrix" id="matrixViewBtn">Matrix View</button>
+                    <button class="toggle-btn" data-view-type="radar" id="radarViewBtn">Radar View</button>
+                </div>
+                
+                <div id="frameworkMatrix" class="framework-matrix"></div>
+                <div id="frameworkRadar" class="framework-radar" style="display: none;">
+                    <canvas id="radarChart"></canvas>
+                </div>
+            </div>
+
+            <div class="regional-templates">
+                <h3 id="regionalTemplatesTitle">Regional Compliance Templates</h3>
+                <div class="templates-grid">
+                    <button class="template-card" data-template="kuwait-banking">
+                        <div class="template-icon">🏦</div>
+                        <div class="template-name" id="kuwaitBankingTemplate">Kuwait Banking</div>
+                        <div class="template-desc">CBK + SWIFT + PCI-DSS</div>
+                    </button>
+                    <button class="template-card" data-template="saudi-financial">
+                        <div class="template-icon">💰</div>
+                        <div class="template-name" id="saudiFinancialTemplate">Saudi Financial</div>
+                        <div class="template-desc">SAMA + NCA-ECC</div>
+                    </button>
+                    <button class="template-card" data-template="gcc-healthcare">
+                        <div class="template-icon">🏥</div>
+                        <div class="template-name" id="gccHealthcareTemplate">GCC Healthcare</div>
+                        <div class="template-desc">ISO 27001 + DPA</div>
+                    </button>
+                    <button class="template-card" data-template="critical-infrastructure">
+                        <div class="template-icon">⚡</div>
+                        <div class="template-name" id="criticalInfraTemplate">Critical Infrastructure</div>
+                        <div class="template-desc">CIS + NIST + Regional</div>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reports View -->
+        <section id="reports" class="view">
+            <div class="view-header">
+                <h2 id="reportsTitle">Reports</h2>
+                <p id="reportsSubtitle">Generate comprehensive reports and export data</p>
+            </div>
+
+            <div class="report-types">
+                <div class="report-card" data-report="executive">
+                    <div class="report-icon" style="background: var(--color-bg-1);">📋</div>
+                    <h3 id="executiveReportTitle">Executive Summary</h3>
+                    <p id="executiveReportDesc">High-level compliance status and key recommendations</p>
+                    <button class="btn btn--primary generate-report-btn" data-report-type="executive">
+                        <span id="generateExecBtn">Generate Report</span>
+                    </button>
+                </div>
+                
+                <div class="report-card" data-report="detailed">
+                    <div class="report-icon" style="background: var(--color-bg-2);">📊</div>
+                    <h3 id="detailedReportTitle">Detailed Gap Analysis</h3>
+                    <p id="detailedReportDesc">Complete control-by-control assessment</p>
+                    <button class="btn btn--primary generate-report-btn" data-report-type="detailed">
+                        <span id="generateDetailedBtn">Generate Report</span>
+                    </button>
+                </div>
+                
+                <div class="report-card" data-report="roadmap-report">
+                    <div class="report-icon" style="background: var(--color-bg-3);">🗺️</div>
+                    <h3 id="roadmapReportTitle">Implementation Roadmap</h3>
+                    <p id="roadmapReportDesc">Phased implementation plan with timelines</p>
+                    <button class="btn btn--primary generate-report-btn" data-report-type="roadmap-report">
+                        <span id="generateRoadmapRepBtn">Generate Report</span>
+                    </button>
+                </div>
+                
+                <div class="report-card" data-report="framework">
+                    <div class="report-icon" style="background: var(--color-bg-4);">🔗</div>
+                    <h3 id="frameworkReportTitle">Framework Compliance</h3>
+                    <p id="frameworkReportDesc">Mapping to selected frameworks</p>
+                    <button class="btn btn--primary generate-report-btn" data-report-type="framework">
+                        <span id="generateFrameworkBtn">Generate Report</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="export-section">
+                <h3 id="exportDataTitle">Export Assessment Data</h3>
+                <div class="export-buttons">
+                    <button class="btn btn--secondary" id="exportJSONBtn">
+                        <span id="exportJSONText">Export JSON</span>
+                    </button>
+                    <button class="btn btn--secondary" id="exportExcelBtn">
+                        <span id="exportExcelText">Export Excel (CSV)</span>
+                    </button>
+                    <button class="btn btn--secondary" id="importJSONBtn">
+                        <span id="importJSONText">Import JSON</span>
+                    </button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;">
+                </div>
+            </div>
+
+            <div class="data-management">
+                <h3 id="dataManagementTitle">Data Management</h3>
+                <div class="management-buttons">
+                    <button class="btn btn--outline" id="saveLocalBtn">
+                        <span id="saveLocalText">Save to Browser</span>
+                    </button>
+                    <button class="btn btn--outline" id="loadLocalBtn">
+                        <span id="loadLocalText">Load from Browser</span>
+                    </button>
+                    <button class="btn btn--outline" id="clearDataBtn" style="border-color: var(--color-error); color: var(--color-error);">
+                        <span id="clearDataText">Clear All Data</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for displaying reports -->
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Report</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn--secondary" id="printReportBtn">
+                    <span id="printText">Print Report</span>
+                </button>
+                <button class="btn btn--primary" id="closeModalBtn">
+                    <span id="closeText">Close</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notifications -->
+    <div id="toast" class="toast"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
