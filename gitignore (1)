@@ -1,0 +1,44 @@
+# Operating System
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node
+node_modules/
+npm-debug.log
+
+# Build
+dist/
+build/
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+
+# Testing
+coverage/
+
+# Documentation build
+_site/
+.jekyll-cache/
+
+# Backup
+*.bak
+*.backup
